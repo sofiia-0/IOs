@@ -1,0 +1,35 @@
+import Foundation
+
+func calcularEstadisticas(_ array: [Int]) -> (Double, Double, Int?) {
+    // Calcular la media
+    let media = Double(array.reduce(0, +)) / Double(array.count)
+    
+    // Calcular la mediana
+    let arrayOrdenado = array.sorted()
+    let n = arrayOrdenado.count
+    let mediana: Double
+    if n % 2 == 1 {
+        mediana = Double(arrayOrdenado[n / 2])
+    } else {
+        mediana = Double(arrayOrdenado[n / 2 - 1] + arrayOrdenado[n / 2]) / 2.0
+    }
+    
+    // Calcular la moda
+    var frecuencias = [Int: Int]()
+    for numero in array {
+        frecuencias[numero, default: 0] += 1
+    }
+    let moda = frecuencias.max { $0.value < $1.value }?.key
+    
+    return (media, mediana, moda)
+}
+
+let arrayEjemplo = [1, 2, 3, 4, 4, 4, 5, 6, 6, 6, 7, 8]
+let resultado = calcularEstadisticas(arrayEjemplo)
+print("Media:", resultado.0)
+print("Mediana:", resultado.1)
+if let moda = resultado.2 {
+    print("Moda:", moda)
+} else {
+    print("No hay moda única")
+}
