@@ -1,0 +1,71 @@
+import Foundation
+
+func ordenarPorSeleccion(_ array: inout [Int]) {
+    guard array.count > 1 else { return } // Si el array tiene 0 o 1 elemento, ya está ordenado
+    
+    let n = array.count
+    
+    for i in 0..<n-1 {
+        var indiceMenor = i
+        for j in i+1..<n {
+            if array[j] < array[indiceMenor] {
+                indiceMenor = j
+            }
+        }
+        if indiceMenor != i {
+            array.swapAt(i, indiceMenor)
+        }
+    }
+}
+
+func busquedaBinariaRecursiva(_ array: [Int], _ valor: Int, inicio: Int, fin: Int) -> Int? {
+    // Verificar si el array está ordenado
+    var esOrdenado = true
+    for i in 0..<array.count - 1 {
+        if array[i] > array[i+1] {
+            esOrdenado = false
+            break
+        }
+    }
+
+    // Si no está ordenado, ordenar y mostrar mensaje
+    if !esOrdenado {
+        print("El array no está ordenado. Ordenando...")
+        // Añadir una pequeña pausa de 1 segundo (1000 ms) antes de ordenar
+        sleep(1)
+        var arrayOrdenado = array
+        ordenarPorSeleccion(&arrayOrdenado)
+        print("Array ordenado por selección:", arrayOrdenado)
+        // Llamar recursivamente con el array ordenado
+        return busquedaBinariaRecursiva(arrayOrdenado, valor, inicio: 0, fin: arrayOrdenado.count - 1)
+    }
+
+    // Verificar los límites del inicio y fin
+    if inicio > fin {
+        return nil
+    }
+
+    // Calcular el índice medio del segmento actual
+    let medio = (inicio + fin) / 2
+
+    // Comprobar si el valor buscado está en el índice medio
+    if array[medio] == valor {
+        return medio
+    } else if valor < array[medio] {
+        // Si el valor es menor que el valor medio, buscar en la mitad izquierda
+        return busquedaBinariaRecursiva(array, valor, inicio: inicio, fin: medio - 1)
+    } else {
+        // Si el valor es mayor que el valor medio, buscar en la mitad derecha
+        return busquedaBinariaRecursiva(array, valor, inicio: medio + 1, fin: fin)
+    }
+}
+
+// Ejemplo de uso:
+var arrayDesordenado = [-2, 1, -5, 5, 11, 1, 15, 19, 7, 13]
+let valorBuscado = 11
+
+if let resultado = busquedaBinariaRecursiva(arrayDesordenado, valorBuscado, inicio: 0, fin: arrayDesordenado.count - 1) {
+    print("El valor \(valorBuscado) se encontró en la posición \(resultado).")
+} else {
+    print("El valor \(valorBuscado) no se encontró en el array.")
+}
