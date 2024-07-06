@@ -1,0 +1,26 @@
+import Foundation
+
+func ordenarPorSeleccion(_ array: inout [Int]) {
+    guard array.count > 1 else { return } // Si el array tiene 0 o 1 elemento, ya está ordenado
+    
+    let n = array.count
+    
+    for i in 0..<n-1 {
+        var indiceMenor = i
+        for j in i+1..<n {
+            if array[j] < array[indiceMenor] {
+                indiceMenor = j
+            }
+        }
+        if indiceMenor != i {
+            array.swapAt(i, indiceMenor)
+        }
+    }
+}
+
+// Ejemplo de uso
+var arrayEjemplo = [3, -2, 30, 2, 1]
+print("Array original:", arrayEjemplo)
+
+ordenarPorSeleccion(&arrayEjemplo)
+print("Array ordenado por selección:", arrayEjemplo)
