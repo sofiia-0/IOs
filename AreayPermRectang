@@ -1,0 +1,14 @@
+import Foundation
+
+func calcularAreaYPerimetro(ancho: Double, alto: Double) -> (Double, Double) {
+  let area = ancho * alto
+  let perimetro = 2 * (ancho + alto)
+  return (area, perimetro)
+}
+
+// Ejemplo de uso de la función con valores de prueba
+let (area, perimetro) = calcularAreaYPerimetro(ancho: 5.0, alto: 3.0)
+
+// Impresión de resultados
+print("El área del rectángulo es: \(area)")
+print("El perímetro del rectángulo es: \(perimetro)")
