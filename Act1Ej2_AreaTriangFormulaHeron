@@ -1,28 +1,23 @@
 import Foundation
 
 func calcularAreaTriangulo(a: Double, b: Double, c: Double) -> Double? {
-    // Verificar si los lados forman un triángulo válido
-    guard a > 0, b > 0, c > 0 else {
-        return nil  // Si alguno de los lados es menor o igual a cero, no es un triángulo válido
+    // Validar si los lados forman un triángulo válido
+    if a <= 0 || b <= 0 || c <= 0 || a + b <= c || a + c <= b || b + c <= a {
+        print("Los lados ingresados no forman un triángulo válido")
+        return nil
     }
     
-    // Verificar la desigualdad triangular
-    if a + b <= c || a + c <= b || b + c <= a {
-        return nil  // No se cumple la desigualdad triangular
-    }
+    // Calcular semiperímetro
+    let s = (a + b + c) / 2
     
-    // Calcular el semiperímetro
-    let s = (a + b + c) / 2.0
-    
-    // Calcular el área utilizando la fórmula de Herón
+    // Calcular área usando la fórmula de Herón
     let area = sqrt(s * (s - a) * (s - b) * (s - c))
     
     return area
 }
 
-// Ejemplo de uso de la función
-if let area = calcularAreaTriangulo(a: 3.0, b: 4.0, c: 5.0) {
-    print("El área del triángulo es: \(area)")
+if let area = calcularAreaTriangulo(a: 3, b: 4, c: 5) {
+    print("El área del triángulo es \(area)")
 } else {
-    print("Los lados dados no forman un triángulo válido.")
+    print("Los lados proporcionados no forman un triángulo válido")
 }
