@@ -1,35 +1,42 @@
 import Foundation
 
 func calcularEstadisticas(_ array: [Int]) -> (Double, Double, Int?) {
-    // Calcular la media
-    let media = Double(array.reduce(0, +)) / Double(array.count)
     
-    // Calcular la mediana
+    // Calcular media
+    let suma = Double(array.reduce(0, +))
+    let conteo = Double(array.count)
+    let media = suma / conteo
+    
+    // Calcular mediana
     let arrayOrdenado = array.sorted()
-    let n = arrayOrdenado.count
     let mediana: Double
-    if n % 2 == 1 {
-        mediana = Double(arrayOrdenado[n / 2])
+    let mitad = conteo / 2
+    if conteo.truncatingRemainder(dividingBy: 2) == 1 {
+        mediana = Double(arrayOrdenado[Int(mitad)])
     } else {
-        mediana = Double(arrayOrdenado[n / 2 - 1] + arrayOrdenado[n / 2]) / 2.0
+        mediana = (Double(arrayOrdenado[Int(mitad - 1)]) + Double(arrayOrdenado[Int(mitad)])) / 2
     }
     
-    // Calcular la moda
+    // Contar la frecuencia de cada número
     var frecuencias = [Int: Int]()
     for numero in array {
         frecuencias[numero, default: 0] += 1
     }
-    let moda = frecuencias.max { $0.value < $1.value }?.key
     
+    // Encontrar la frecuencia máxima
+    let maxFrecuencia = frecuencias.values.max() ?? 0
+    
+    // Encontrar los números con la frecuencia máxima
+    let modas = frecuencias.filter { $0.value == maxFrecuencia }.keys
+    
+    // Determinar la moda: devuelve el único número si hay una sola moda, o nil si hay más de una
+    let moda: Int? = modas.count == 1 ? modas.first : nil
+
     return (media, mediana, moda)
 }
 
-let arrayEjemplo = [1, 2, 3, 4, 4, 4, 5, 6, 6, 6, 7, 8]
-let resultado = calcularEstadisticas(arrayEjemplo)
-print("Media:", resultado.0)
-print("Mediana:", resultado.1)
-if let moda = resultado.2 {
-    print("Moda:", moda)
-} else {
-    print("No hay moda única")
-}
+let arrayNumeros = [1, 2, 2, 3, 4, 4, 4, 5]
+let resultado = calcularEstadisticas(arrayNumeros)
+print("Media > \(resultado.0)")
+print("Mediana > \(resultado.1)")
+print("Moda > \(resultado.2 != nil ? "\(resultado.2!)" : "No hay moda única")")
